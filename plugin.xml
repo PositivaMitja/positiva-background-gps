@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="positiva-background-gps" version="0.0.1">
+    <name>Background GPS</name>
+    <description>Positiva Background GPS</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,background,gps</keywords>
+    <js-module src="www/background-gps.js" name="BackgroundGPS">
+        <clobbers target="cordova.plugins.backgroundGPS" />
+    </js-module>
+	<platform name="android">
+		<source-file src="src/android/si/positiva/plugins/background-gps/BackgroundGPS.java" target-dir="src/si/positiva/plugins/background-gps"/>
+	</platform>
+</plugin>
