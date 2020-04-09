@@ -1,4 +1,4 @@
-package si.positiva.plugins.background-gps;
+package si.positiva.plugins.background_gps;
 
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;

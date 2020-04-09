@@ -9,6 +9,6 @@
         <clobbers target="cordova.plugins.backgroundGPS" />
     </js-module>
 	<platform name="android">
-		<source-file src="src/android/si/positiva/plugins/background-gps/BackgroundGPS.java" target-dir="src/si/positiva/plugins/background-gps"/>
+		<source-file src="src/android/si/positiva/plugins/background_gps/BackgroundGPS.java" target-dir="src/si/positiva/plugins/background_gps"/>
 	</platform>
 </plugin>
