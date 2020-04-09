@@ -41,7 +41,7 @@ var BackgroundGPS = (function (_super) {
     __decorate([
         Cordova(),
         __metadata("design:type", Function),
-        __metadata("design:paramtypes", [String, Object]),
+        __metadata("design:paramtypes", [Object]),
         __metadata("design:returntype", Promise)
     ], BackgroundGPS.prototype, "test", null);
 
