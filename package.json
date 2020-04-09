@@ -1,5 +1,6 @@
 {
   "name": "positiva-background-gps",
   "version": "0.0.1",
-  "module": "index.js"
+  "module": "index.js",
+  "typings": "index.d.ts"
 }
