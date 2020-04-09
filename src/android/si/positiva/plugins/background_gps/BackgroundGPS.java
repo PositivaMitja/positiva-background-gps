@@ -3,7 +3,6 @@ package si.positiva.plugins.background_gps;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.apache.cordova.CallbackContext;
-import android.widget.Toast;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
@@ -14,7 +13,7 @@ public class BackgroundGPS extends CordovaPlugin
 	{
 		if (action.equals("test")) 
 		{
-			Toast.makeText(this, "dela", Toast.LENGTH_LONG).show();
+			System.out.println("dela");
 		}
 		return true;
 	}
