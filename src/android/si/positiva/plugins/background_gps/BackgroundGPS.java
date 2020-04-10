@@ -33,8 +33,11 @@ public class BackgroundGPS extends CordovaPlugin
 		@Override
 		public void onServiceConnected (ComponentName name, IBinder service)
 		{
+			System.out.println("mitja onServiceConnected");
 			BackgroundBinder binder = (BackgroundBinder) service;
+			System.out.println("mitja binder");
 			BackgroundGPS.this.service = binder.getService();
+			System.out.println("mitja getService");
 		}
 
 		@Override
@@ -49,8 +52,11 @@ public class BackgroundGPS extends CordovaPlugin
 		Activity context = cordova.getActivity();
 		Intent intent = new Intent(context, BackgroundService.class);
 		try {
+			System.out.println("mitja bind");
 			context.bindService(intent, connection, BIND_AUTO_CREATE);
+			System.out.println("mitja startService");
 			context.startService(intent);
+			System.out.println("mitja intent");
 		} catch (Exception e) {
 			System.out.println("mitja " + e.getMessage());
 		}

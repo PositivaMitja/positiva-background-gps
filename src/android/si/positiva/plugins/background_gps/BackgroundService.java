@@ -14,6 +14,7 @@ public class BackgroundService extends Service
     {
         BackgroundService getService()
         {
+			System.out.println("mitja BackgroundService getService");
             return BackgroundService.this;
         }
     }
@@ -26,6 +27,7 @@ public class BackgroundService extends Service
     }
 	@Override
     public IBinder onBind (Intent intent) {
+		System.out.println("mitja IBinder");
         return binder;
     }
 	private final IBinder binder = new BackgroundBinder();
@@ -37,4 +39,15 @@ public class BackgroundService extends Service
         wakeLock.acquire();
     }
 	private PowerManager.WakeLock wakeLock;
+	@Override
+    public void onDestroy()
+    {
+		System.out.println("mitja onDestroy");
+        super.onDestroy();
+    }
+    @Override
+    public int onStartCommand (Intent intent, int flags, int startId) {
+		System.out.println("mitja onStartCommand");
+        return START_STICKY;
+    }
 }
