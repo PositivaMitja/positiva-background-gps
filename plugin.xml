@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="positiva-background-gps" version="0.0.1">
+        id="positiva-background-gps" version="0.0.2">
     <name>Background GPS</name>
     <description>Positiva Background GPS</description>
     <license>Apache 2.0</license>
@@ -10,9 +10,13 @@
     </js-module>
 	<platform name="android">
 		<source-file src="src/android/si/positiva/plugins/background_gps/BackgroundGPS.java" target-dir="src/si/positiva/plugins/background_gps"/>
+		<source-file src="src/android/si/positiva/plugins/background_gps/BackgroundService.java" target-dir="src/si/positiva/plugins/background_gps"/>
 		<config-file target="res/xml/config.xml" parent="/*">
             <feature name="BackgroundGPS">
                 <param name="android-package" value="si.positiva.plugins.background_gps.BackgroundGPS"/>
+            </feature>
+			<feature name="BackgroundService">
+                <param name="android-package" value="si.positiva.plugins.background_gps.BackgroundService"/>
             </feature>
         </config-file>
 	</platform>
