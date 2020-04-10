@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.content.Intent;
 import android.os.PowerManager;
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
+import android.annotation.SuppressLint;
 
 public class BackgroundService extends Service
 {
