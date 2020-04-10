@@ -2,6 +2,8 @@ package si.positiva.plugins.background_gps;
 
 import android.app.Service;
 import android.os.Binder;
+import android.os.IBinder;
+import android.content.Intent;
 
 public class BackgroundService extends Service
 {
@@ -18,4 +20,9 @@ public class BackgroundService extends Service
         super.onCreate();
         System.out.println("mitja start background");
     }
+	@Override
+    public IBinder onBind (Intent intent) {
+        return binder;
+    }
+	private final IBinder binder = new BackgroundBinder();
 }
