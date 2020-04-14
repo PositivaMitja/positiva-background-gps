@@ -65,6 +65,7 @@ public class BackgroundService extends Service
 	@Override
     public void onDestroy()
     {
+		System.out.println("mitja onDestroy");
         super.onDestroy();
     }
     @Override
@@ -94,9 +95,6 @@ public class BackgroundService extends Service
             System.out.println("mitja Lost location permission.");
         }
     }
-	public void onDestroy() {
-		System.out.println("mitja onDestroy");
-    }
 	public void onLowMemory() {
 		System.out.println("mitja onLowMemory");
     }
@@ -110,10 +108,6 @@ public class BackgroundService extends Service
 	public void onTaskRemoved(Intent rootIntent) {
 		System.out.println("mitja onTaskRemoved");
     }
-	public final void stopSelf(int startId) {
-		System.out.println("mitja stopSelf" + startId);
-		super.stopSelf(startId);
-	}
 	public void requestLocationUpdates() {
         try {
             fusedLocationClient.requestLocationUpdates(locationRequest,
