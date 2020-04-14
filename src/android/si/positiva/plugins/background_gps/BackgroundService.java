@@ -140,15 +140,15 @@ public class BackgroundService extends Service
         PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
                 intentNew, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .addAction(1, "mitja start",
+                .addAction(getResources().getIdentifier("icon", "drawable", getPackageName(), "mitja start",
                         activityPendingIntent)
-                .addAction(1, "mitja cancel",
+                .addAction(getResources().getIdentifier("icon", "drawable", getPackageName(), "mitja cancel",
                         servicePendingIntent)
                 .setContentText("mitja text")
                 .setContentTitle("mitja title")
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_HIGH)
-                .setSmallIcon(1)
+                .setSmallIcon(getResources().getIdentifier("icon", "drawable", getPackageName())
                 .setTicker("mitja text")
                 .setWhen(System.currentTimeMillis());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
