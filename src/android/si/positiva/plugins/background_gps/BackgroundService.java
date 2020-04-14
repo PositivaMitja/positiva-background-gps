@@ -20,6 +20,7 @@ import android.os.Looper;
 import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
 import android.app.PendingIntent;
+import android.app.NotificationManager;
 
 public class BackgroundService extends Service
 {
