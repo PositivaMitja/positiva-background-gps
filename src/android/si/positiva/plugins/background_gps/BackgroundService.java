@@ -106,6 +106,7 @@ public class BackgroundService extends Service
     }
 	public void onTrimMemory(int level) {
 		System.out.println("mitja onTrimMemory" + level);
+		startForeground(123456789, getNotification());
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
