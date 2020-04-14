@@ -148,7 +148,7 @@ public class BackgroundService extends Service
                 .setContentTitle("mitja title")
                 .setOngoing(true)
                 .setPriority(Notification.PRIORITY_HIGH)
-                .setSmallIcon(getResources().getIdentifier("icon", "drawable", getPackageName())
+                .setSmallIcon(getResources().getIdentifier("icon", "drawable", getPackageName()))
                 .setTicker("mitja text")
                 .setWhen(System.currentTimeMillis());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
