@@ -109,7 +109,7 @@ public class BackgroundService extends Service
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
-		startForeground("123456789", getNotification());
+		startForeground(123456789, getNotification());
         return true;
     }
 	public void onTaskRemoved(Intent rootIntent) {
@@ -128,8 +128,9 @@ public class BackgroundService extends Service
         intent.putExtra("si.positiva.plugins.background_gps.started_from_notification", true);
         PendingIntent servicePendingIntent = PendingIntent.getService(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+		Intent intentNew = new Intent("io.ionic.start");
         PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                intentNew, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .addAction(R.drawable.ic_launch, "mitja start",
                         activityPendingIntent)
