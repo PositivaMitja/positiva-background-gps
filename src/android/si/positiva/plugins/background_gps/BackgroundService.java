@@ -21,6 +21,7 @@ import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
 import android.app.PendingIntent;
 import android.app.NotificationManager;
+import android.app.NotificationChannel;
 
 public class BackgroundService extends Service
 {
@@ -51,6 +52,11 @@ public class BackgroundService extends Service
             }
         };
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel =
+                    new NotificationChannel("mitja01", "mitja", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
         createLocationRequest();
         //getLastLocation();
 		requestLocationUpdates();
@@ -144,6 +150,9 @@ public class BackgroundService extends Service
                 .setSmallIcon(1)
                 .setTicker("mitja text")
                 .setWhen(System.currentTimeMillis());
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId("mitja01"); // Channel ID
+        }
         return builder.build();
     }
 }
