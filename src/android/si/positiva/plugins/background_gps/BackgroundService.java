@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import android.location.Location;
 import com.google.android.gms.tasks.Task;
 import android.support.annotation.NonNull;
+import android.os.Looper;
 
 public class BackgroundService extends Service
 {
@@ -41,7 +42,7 @@ public class BackgroundService extends Service
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                System.out.println("mitja " + locationResult.getLastLocation());
+                System.out.println("mitja locs " + locationResult.getLastLocation());
             }
         };
         createLocationRequest();
@@ -112,4 +113,12 @@ public class BackgroundService extends Service
 		System.out.println("mitja stopSelf" + startId);
 		super.stopSelf(startId);
 	}
+	public void requestLocationUpdates() {
+        try {
+            fusedLocationClient.requestLocationUpdates(locationRequest,
+                    locationCallback, Looper.myLooper());
+        } catch (SecurityException unlikely) {
+            System.out.println("mitja requestLocationUpdates " + unlikely);
+        }
+    }
 }
