@@ -46,7 +46,8 @@ public class BackgroundService extends Service
             }
         };
         createLocationRequest();
-        getLastLocation();
+        //getLastLocation();
+		requestLocationUpdates();
     }
 	@Override
     public IBinder onBind (Intent intent) {
