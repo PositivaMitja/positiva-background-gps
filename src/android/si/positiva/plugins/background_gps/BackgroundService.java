@@ -35,6 +35,7 @@ public class BackgroundService extends Service
     {
         super.onCreate();
 		keepAwake();
+		System.out.println("mitja create");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -81,6 +82,7 @@ public class BackgroundService extends Service
                     .addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
                         public void onComplete(@NonNull Task<Location> task) {
+							System.out.println("mitja OnCompleteListener");
                             if (task.isSuccessful() && task.getResult() != null) {
                                 System.out.println("mitja location " + task.getResult());
                             }
