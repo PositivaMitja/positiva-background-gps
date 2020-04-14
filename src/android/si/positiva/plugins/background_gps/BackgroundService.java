@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import android.location.Location;
 import com.google.android.gms.tasks.Task;
+import android.support.annotation.NonNull;
 
 public class BackgroundService extends Service
 {
