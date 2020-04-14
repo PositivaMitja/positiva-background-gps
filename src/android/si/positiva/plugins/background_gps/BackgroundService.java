@@ -17,12 +17,16 @@ import android.location.Location;
 import com.google.android.gms.tasks.Task;
 import android.support.annotation.NonNull;
 import android.os.Looper;
+import android.app.Notification;
+import android.support.v4.app.NotificationCompat;
+import android.app.PendingIntent;
 
 public class BackgroundService extends Service
 {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
+	private NotificationManager notificationManager;
 
 	class BackgroundBinder extends Binder
     {
@@ -45,6 +49,7 @@ public class BackgroundService extends Service
                 System.out.println("mitja locs " + locationResult.getLastLocation());
             }
         };
+		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         createLocationRequest();
         //getLastLocation();
 		requestLocationUpdates();
@@ -103,7 +108,8 @@ public class BackgroundService extends Service
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
-        return false;
+		startForeground("123456789", getNotification());
+        return true;
     }
 	public void onTaskRemoved(Intent rootIntent) {
 		System.out.println("mitja onTaskRemoved");
@@ -115,5 +121,26 @@ public class BackgroundService extends Service
         } catch (SecurityException unlikely) {
             System.out.println("mitja requestLocationUpdates " + unlikely);
         }
+    }
+	private Notification getNotification() {
+        Intent intent = new Intent(this, BackgroundService.class);
+        intent.putExtra("si.positiva.plugins.background_gps.started_from_notification", true);
+        PendingIntent servicePendingIntent = PendingIntent.getService(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class), 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .addAction(R.drawable.ic_launch, "mitja start",
+                        activityPendingIntent)
+                .addAction(R.drawable.ic_cancel, "mitja cancel",
+                        servicePendingIntent)
+                .setContentText("mitja text")
+                .setContentTitle("mitja title")
+                .setOngoing(true)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("mitja text")
+                .setWhen(System.currentTimeMillis());
+        return builder.build();
     }
 }
