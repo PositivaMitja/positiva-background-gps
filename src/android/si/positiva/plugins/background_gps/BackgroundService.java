@@ -7,14 +7,25 @@ import android.content.Intent;
 import android.os.PowerManager;
 import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
 import android.annotation.SuppressLint;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import android.location.Location;
+import com.google.android.gms.tasks.Task;
 
 public class BackgroundService extends Service
 {
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+
 	class BackgroundBinder extends Binder
     {
         BackgroundService getService()
         {
-			System.out.println("mitja BackgroundService getService");
             return BackgroundService.this;
         }
     }
@@ -22,12 +33,20 @@ public class BackgroundService extends Service
     public void onCreate()
     {
         super.onCreate();
-        System.out.println("mitja start background");
 		keepAwake();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                System.out.println("mitja " + locationResult.getLastLocation());
+            }
+        };
+        createLocationRequest();
+        getLastLocation();
     }
 	@Override
     public IBinder onBind (Intent intent) {
-		System.out.println("mitja IBinder");
         return binder;
     }
 	private final IBinder binder = new BackgroundBinder();
@@ -42,12 +61,32 @@ public class BackgroundService extends Service
 	@Override
     public void onDestroy()
     {
-		System.out.println("mitja onDestroy");
         super.onDestroy();
     }
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
 		System.out.println("mitja onStartCommand");
         return START_STICKY;
+    }
+    private void createLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+    private void getLastLocation() {
+        try {
+            fusedLocationClient.getLastLocation()
+                    .addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                System.out.println("mitja location " + task.getResult());
+                            }
+                        }
+                    });
+        } catch (SecurityException unlikely) {
+            System.out.println("mitja Lost location permission.");
+        }
     }
 }
