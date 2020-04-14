@@ -92,4 +92,24 @@ public class BackgroundService extends Service
             System.out.println("mitja Lost location permission.");
         }
     }
+	public void onDestroy() {
+		System.out.println("mitja onDestroy");
+    }
+	public void onLowMemory() {
+		System.out.println("mitja onLowMemory");
+    }
+	public void onTrimMemory(int level) {
+		System.out.println("mitja onTrimMemory" + level);
+    }
+	public boolean onUnbind(Intent intent) {
+		System.out.println("mitja onUnbind");
+        return false;
+    }
+	public void onTaskRemoved(Intent rootIntent) {
+		System.out.println("mitja onTaskRemoved");
+    }
+	public final void stopSelf(int startId) {
+		System.out.println("mitja stopSelf" + startId);
+		super.stopSelf(startId);
+	}
 }
