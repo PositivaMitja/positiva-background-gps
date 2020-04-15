@@ -78,7 +78,7 @@ public class BackgroundService extends Service
 							param += "\"latitude\":" + String.valueOf(location.getLatitude()) + ",";
 							param += "\"longitude\":" + String.valueOf(location.getLongitude()) + ",";
 							param += "\"altitude\":" + String.valueOf(location.getAltitude()) + ",";
-							param += "\"accuracy\":" + String.valueOf(location.getAccuracy());
+							param += "\"accuracy\":" + String.valueOf(location.getAccuracy()) + "}";
 							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
 							connection.setRequestMethod("POST");
 							connection.setRequestProperty ("Authorization", "Bearer " + settings.getString("token"));
