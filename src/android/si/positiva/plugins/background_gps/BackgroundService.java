@@ -182,7 +182,6 @@ public class BackgroundService extends Service
 		private JSONObject settings;
         public BackgroundTask(Context context, JSONObject settings)
 		{
-			super(context);
 			this.settings = settings;
 		}
 		@Override
