@@ -177,7 +177,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja updateSettings "+ settings.toString());
 
     }
-	protected abstract class AbstractTask extends AsyncTask<Location, Void, Void>
+	protected abstract class AbstractTask extends AsyncTask<Location, Void, JSONObject>
     {
 		private JSONObject settings;
         public AbstractTask(JSONObject settings)
@@ -185,7 +185,7 @@ public class BackgroundService extends Service
 			this.settings = settings;
 		}
 		@Override
-		protected void doInBackground(Location... params)
+		protected JSONObject doInBackground(Location... params)
 		{
 			Location location = params[0];
 			try
@@ -210,6 +210,8 @@ public class BackgroundService extends Service
             catch (MalformedURLException e) {  }
             catch (IOException e) { }
             catch (JSONException e) { }
+			
+			return new JSONObject();
 		}
     }
 	class BackgroundTask extends AbstractTask
