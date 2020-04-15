@@ -90,9 +90,9 @@ public class BackgroundService extends Service
 							String responseString = IOUtils.toString(connection.getInputStream());
 							System.out.println(responseString);
 						}
-						catch (MalformedURLException e) {  }
-						catch (IOException e) { }
-						catch (JSONException e) { }
+						catch (MalformedURLException e) { System.out.println(e.getMessage()); }
+						catch (IOException e) { System.out.println(e.getMessage()); }
+						catch (JSONException e) { System.out.println(e.getMessage()); }
 					}
 				}).start();
             }
