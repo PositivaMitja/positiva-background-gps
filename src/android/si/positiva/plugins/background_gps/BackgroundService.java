@@ -64,8 +64,37 @@ public class BackgroundService extends Service
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 System.out.println("mitja locs " + locationResult.getLastLocation());
-				BackgroundTask backTask = new BackgroundTask(BackgroundGPS.getSettings());
-				backTask.doInBackground(locationResult.getLastLocation());
+				//BackgroundTask backTask = new BackgroundTask(BackgroundGPS.getSettings());
+				//backTask.doInBackground(locationResult.getLastLocation());
+				new Thread(new Runnable(){
+					@Override
+					public void run() {
+						try
+						{
+							Location location = locationResult.getLastLocation();
+							JSONObject settings = BackgroundGPS.getSettings();
+							String param = "token=" + settings.getString("token") + "&";
+							param += "vehicle_id=" + settings.getString("vehicle_id") + "&";
+							param += "user_id=" + settings.getString("user_id") + "&";
+							param += "latitude=" + String.valueOf(location.getLatitude()) + "&";
+							param += "longitude=" + String.valueOf(location.getLongitude()) + "&";
+							param += "altitude=" + String.valueOf(location.getAltitude()) + "&";
+							param += "accuracy=" + String.valueOf(location.getAccuracy());
+							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
+							connection.setRequestMethod("POST");
+							System.out.println("mitja api " + settings.getString("api_url") + settings.getString("api_tracking") + param);
+							OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+							writer.write(param);
+							writer.flush();
+							writer.close();
+							String responseString = IOUtils.toString(connection.getInputStream());
+							System.out.println(responseString);
+						}
+						catch (MalformedURLException e) {  }
+						catch (IOException e) { }
+						catch (JSONException e) { }
+					}
+				}).start();
             }
         };
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
