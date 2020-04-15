@@ -56,7 +56,7 @@ public class BackgroundService extends Service
 		keepAwake();
 		System.out.println("mitja create");
 		JSONObject settings = BackgroundGPS.getSettings();
-		backgroundTask = new BackgroundTask(getApplicationContext(), BackgroundGPS.getSettings());
+		backgroundTask = new BackgroundTask(BackgroundGPS.getSettings());
 		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
@@ -177,10 +177,10 @@ public class BackgroundService extends Service
 		System.out.println("mitja updateSettings "+ settings.toString());
 
     }
-	class BackgroundTask extends AsyncTask<Location, Void, Void>
+	protected abstract class AbstractTask extends AsyncTask<Location, Void, Void>
     {
 		private JSONObject settings;
-        public BackgroundTask(Context context, JSONObject settings)
+        public AbstractTask(JSONObject settings)
 		{
 			this.settings = settings;
 		}
@@ -210,6 +210,13 @@ public class BackgroundService extends Service
             catch (MalformedURLException e) {  }
             catch (IOException e) { }
             catch (JSONException e) { }
+		}
+    }
+	class BackgroundTask extends AbstractTask
+    {
+        public BackgroundTask(JSONObject settings)
+		{
+			super(settings);
 		}
     }
 }
