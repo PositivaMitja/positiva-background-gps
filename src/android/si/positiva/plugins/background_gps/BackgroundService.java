@@ -24,6 +24,15 @@ import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.os.Build;
 import org.json.JSONObject;
+import android.os.AsyncTask;
+import android.content.Context;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 
 public class BackgroundService extends Service
 {
@@ -31,6 +40,7 @@ public class BackgroundService extends Service
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 	private NotificationManager notificationManager;
+	private BackgroundTask backgroundTask;
 
 	class BackgroundBinder extends Binder
     {
@@ -46,6 +56,7 @@ public class BackgroundService extends Service
 		keepAwake();
 		System.out.println("mitja create");
 		JSONObject settings = BackgroundGPS.getSettings();
+		backgroundTask = new backgroundTask(getApplicationContext(), BackgroundGPS.getSettings());
 		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
@@ -53,6 +64,7 @@ public class BackgroundService extends Service
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 System.out.println("mitja locs " + locationResult.getLastLocation());
+				backgroundTask.doInBackground(locationResult.getLastLocation());
             }
         };
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -164,5 +176,41 @@ public class BackgroundService extends Service
         System.out.println("mitja updateSettings");
 		System.out.println("mitja updateSettings "+ settings.toString());
 
+    }
+	class BackgroundTask extends AsyncTask<Location, Void, Void>
+    {
+		private JSONObject settings;
+        public BackgroundTask(Context context, JSONObject settings)
+		{
+			super(context);
+			this.settings = settings;
+		}
+		@Override
+		protected void doInBackground(Location... params)
+		{
+			Location location = params[0];
+			try
+            {
+				String param = "token=" + settings.getString("token") + "&";
+				param += "vehicle_id=" + settings.getString("vehicle_id") + "&";
+				param += "user_id=" + settings.getString("user_id") + "&";
+				param += "latitude=" + String.valueOf(location.getLatitude()) + "&";
+				param += "longitude=" + String.valueOf(location.getLongitude()) + "&";
+				param += "altitude=" + String.valueOf(location.getAltitude()) + "&";
+				param += "accuracy=" + String.valueOf(location.getAccuracy());
+                HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
+                connection.setRequestMethod("POST");
+				System.out.println("mitja api " + settings.getString("api_url") + settings.getString("api_tracking") + param);
+				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+				writer.write(param);
+				writer.flush();
+				writer.close();
+                String responseString = IOUtils.toString(connection.getInputStream());
+                System.out.println(responseString);
+            }
+            catch (MalformedURLException e) {  }
+            catch (IOException e) { }
+            catch (JSONException e) { }
+		}
     }
 }
