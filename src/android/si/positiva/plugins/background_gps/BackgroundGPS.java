@@ -2,6 +2,7 @@ package si.positiva.plugins.background_gps;
 
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.apache.cordova.CallbackContext;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,14 +14,26 @@ import si.positiva.plugins.background_gps.BackgroundService.BackgroundBinder;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
+	private static JSONObject settings = new JSONObject();
 	public BackgroundGPS() {}
 	
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
 	{
-		if (action.equals("test")) 
+		if (action.equals("init")) 
+		{
+			settings = args.optJSONObject(0);
+		}
+		else if (action.equals("startBackground")) 
 		{
 			startService();
+		}
+		else if (action.equals("stopBackground")) 
+		{
+		}
+		else if (action.equals("getLocation")) 
+		{
+			updateSettings();
 		}
 		return true;
 	}
@@ -54,4 +67,13 @@ public class BackgroundGPS extends CordovaPlugin
 			System.out.println("mitja " + e.getMessage());
 		}
 	}
+	
+	static JSONObject getSettings() {
+        return settings;
+    }
+	
+	private void updateSettings()
+    {
+        service.updateSettings(settings);
+    }
 }

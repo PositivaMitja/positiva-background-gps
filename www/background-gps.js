@@ -3,31 +3,35 @@ var exec = cordova.require("cordova/exec");
 function BackgroundGPS() 
 {
 	this.settings = {
-		OPTION1: "mitja",
-		OPTION2: "test"
+		API_URL: "https://",
+		API_TRACKING: "/api/vehicle-trackings/create",
+		API_TOKEN_REFRESH: "/api/user/token/refresh",
+		TOKEN: "",
+		USER_ID: 0,
+		VEHICLE_ID: 0,
+		INTERVAL: 10,
+		FILE_PATH: "file:///"
 	};
 }
 
-BackgroundGPS.prototype.test = function (settings, successCallback, errorCallback) 
+BackgroundGPS.prototype.init = function (settings) 
 {
-	if (errorCallback == null) {
-		errorCallback = function () {
-		};
-	}
+	exec(null, null, 'BackgroundGPS', 'init', [settings]);
+};
 
-	if (typeof errorCallback != "function") {
-		console.log("failure parameter not a function");
-		return;
-	}
+BackgroundGPS.prototype.startBackground = function () 
+{
+	exec(null, null, 'BackgroundGPS', 'startBackground', []);
+};
 
-	if (typeof successCallback != "function") {
-		console.log("success callback parameter must be a function");
-		return;
-	}
+BackgroundGPS.prototype.stopBackground = function () 
+{
+	exec(null, null, 'BackgroundGPS', 'stopBackground', []);
+};
 
-	exec(successCallback, errorCallback, 'BackgroundGPS', 'test', [
-		{"settings": settings}
-	]);
+BackgroundGPS.prototype.getLocation = function (successCallback) 
+{
+	exec(successCallback, null, 'BackgroundGPS', 'getLocation', []);
 };
 		
 var backgroundGPS = new BackgroundGPS();

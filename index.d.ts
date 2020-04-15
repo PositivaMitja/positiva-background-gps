@@ -1,4 +1,7 @@
 import { IonicNativePlugin } from '@ionic-native/core';
 export declare class BackgroundGPS extends IonicNativePlugin {
-    test(settings: any): Promise<any>;
+    init(settings: any): void;
+	startBackground(): void;
+	stopBackground(): void;
+	getLocation(): Promise<any>;
 }

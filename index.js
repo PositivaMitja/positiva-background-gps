@@ -23,18 +23,13 @@ import { Cordova, IonicNativePlugin, Plugin } from '@ionic-native/core';
 var BackgroundGPS = (function (_super) {
     __extends(BackgroundGPS, _super);
     function BackgroundGPS() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.settings = {
-			OPTION1: 'mitja',
-			OPTION2: 'test'
-		};
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
 
-    BackgroundGPS.prototype.test = 
-    function (settings) {
-        return;
-    };
+    BackgroundGPS.prototype.init = function (settings) {};
+	BackgroundGPS.prototype.startBackground = function () {};
+	BackgroundGPS.prototype.stopBackground = function () {};
+	BackgroundGPS.prototype.getLocation = function () { return; };
     BackgroundGPS.decorators = [
         { type: Injectable },
     ];
@@ -42,8 +37,29 @@ var BackgroundGPS = (function (_super) {
         Cordova(),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], BackgroundGPS.prototype, "init", null);
+	
+	__decorate([
+        Cordova(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], BackgroundGPS.prototype, "startBackground", null);
+	
+	__decorate([
+        Cordova(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], BackgroundGPS.prototype, "stopBackground", null);
+	
+	__decorate([
+        Cordova(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
         __metadata("design:returntype", Promise)
-    ], BackgroundGPS.prototype, "test", null);
+    ], BackgroundGPS.prototype, "getLocation", null);
 
     BackgroundGPS = __decorate([
         Plugin({

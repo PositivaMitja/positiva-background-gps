@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.os.Build;
+import org.json.JSONObject;
 
 public class BackgroundService extends Service
 {
@@ -44,6 +45,8 @@ public class BackgroundService extends Service
         super.onCreate();
 		keepAwake();
 		System.out.println("mitja create");
+		JSONObject settings = BackgroundMode.getSettings();
+		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -155,5 +158,11 @@ public class BackgroundService extends Service
             builder.setChannelId("mitja01"); // Channel ID
         }
         return builder.build();
+    }
+	protected void updateSettings(JSONObject settings)
+    {
+        System.out.println("mitja updateSettings");
+		System.out.println("mitja updateSettings "+ settings.toString());
+
     }
 }
