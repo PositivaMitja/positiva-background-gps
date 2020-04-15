@@ -56,7 +56,7 @@ public class BackgroundService extends Service
 		keepAwake();
 		System.out.println("mitja create");
 		JSONObject settings = BackgroundGPS.getSettings();
-		backgroundTask = new BackgroundTask(BackgroundGPS.getSettings());
+		//backgroundTask = new BackgroundTask(BackgroundGPS.getSettings());
 		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
@@ -64,7 +64,8 @@ public class BackgroundService extends Service
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 System.out.println("mitja locs " + locationResult.getLastLocation());
-				backgroundTask.doInBackground(locationResult.getLastLocation());
+				BackgroundTask backTask = new BackgroundTask(BackgroundGPS.getSettings());
+				backTask.doInBackground(locationResult.getLastLocation());
             }
         };
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
