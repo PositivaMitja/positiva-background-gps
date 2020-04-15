@@ -73,15 +73,16 @@ public class BackgroundService extends Service
 						{
 							Location location = locationResult.getLastLocation();
 							JSONObject settings = BackgroundGPS.getSettings();
-							String param = "token=" + settings.getString("token") + "&";
-							param += "vehicle_id=" + settings.getString("vehicle_id") + "&";
-							param += "user_id=" + settings.getString("user_id") + "&";
-							param += "latitude=" + String.valueOf(location.getLatitude()) + "&";
-							param += "longitude=" + String.valueOf(location.getLongitude()) + "&";
-							param += "altitude=" + String.valueOf(location.getAltitude()) + "&";
-							param += "accuracy=" + String.valueOf(location.getAccuracy());
+							String param = "{\"vehicle_id\":" + settings.getString("vehicle_id") + ",";
+							param += "\"user_id\":" + settings.getString("user_id") + ",";
+							param += "\"latitude\":" + String.valueOf(location.getLatitude()) + ",";
+							param += "\"longitude\":" + String.valueOf(location.getLongitude()) + ",";
+							param += "\"altitude\":" + String.valueOf(location.getAltitude()) + ",";
+							param += "\"accuracy\":" + String.valueOf(location.getAccuracy());
 							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
 							connection.setRequestMethod("POST");
+							connection.setRequestProperty ("Authorization", "Bearer " + settings.getString("token"));
+							connection.setRequestProperty("Content-Type", "application/json");
 							System.out.println("mitja api " + settings.getString("api_url") + settings.getString("api_tracking") + param);
 							OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 							writer.write(param);
