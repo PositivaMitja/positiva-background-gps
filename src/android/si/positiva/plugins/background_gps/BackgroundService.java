@@ -45,7 +45,7 @@ public class BackgroundService extends Service
         super.onCreate();
 		keepAwake();
 		System.out.println("mitja create");
-		JSONObject settings = BackgroundMode.getSettings();
+		JSONObject settings = BackgroundGPS.getSettings();
 		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
