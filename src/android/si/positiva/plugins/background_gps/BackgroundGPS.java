@@ -46,6 +46,7 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("stopBackground")) 
 		{
+			stopService();
 		}
 		else if (action.equals("getLocation")) 
 		{
@@ -91,6 +92,14 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 	}
 	
+	private void stopService()
+	{
+		Activity context = cordova.getActivity();
+        Intent intent    = new Intent(context, BackgroundService.class);
+        context.unbindService(connection);
+        context.stopService(intent);
+	}
+	
 	static JSONObject getSettings() {
         return settings;
     }
@@ -127,4 +136,27 @@ public class BackgroundGPS extends CordovaPlugin
 				break;
 		}
 	}
+	
+	@Override
+    public void onPause(boolean multitasking)
+    {
+        System.out.println("mitja CordovaPlugin onPause");
+    }
+	
+	@Override
+    public void onStop () {
+        System.out.println("mitja CordovaPlugin onStop");
+    }
+	
+	@Override
+    public void onResume (boolean multitasking)
+    {
+        System.out.println("mitja CordovaPlugin onResume");
+    }
+	
+	@Override
+    public void onDestroy()
+    {
+        System.out.println("mitja CordovaPlugin onDestroy");
+    }
 }
