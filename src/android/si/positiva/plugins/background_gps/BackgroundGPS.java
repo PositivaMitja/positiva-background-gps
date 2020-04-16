@@ -12,6 +12,8 @@ import android.content.ComponentName;
 import android.os.IBinder;
 import si.positiva.plugins.background_gps.BackgroundService.BackgroundBinder;
 import android.location.Location;
+import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
@@ -35,7 +37,9 @@ public class BackgroundGPS extends CordovaPlugin
 		else if (action.equals("getLocation")) 
 		{
 			Location lastLocation = getLastLocation();
-			callbackContext.success(lastLocation);
+			PluginResult res = new PluginResult(Status.OK, lastLocation);
+			callbackContext.sendPluginResult(res);
+			callbackContext.success();
 		}
 		else
 		{
