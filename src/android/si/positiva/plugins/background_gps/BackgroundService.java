@@ -57,6 +57,7 @@ public class BackgroundService extends Service
     public void onCreate()
     {
         super.onCreate();
+		System.out.println("mitja onCreate");
 		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -168,6 +169,7 @@ public class BackgroundService extends Service
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
+		fusedLocationClient = null;
         return true;
     }
 	public void onTaskRemoved(Intent rootIntent) {
