@@ -34,8 +34,14 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("getLocation")) 
 		{
-			return getLastLocation();
+			Location lastLocation = getLastLocation();
+			callback.success(lastLocation);
 		}
+		else
+		{
+			return false;
+		}
+		return true;
 	}
 
 	private BackgroundService service;
