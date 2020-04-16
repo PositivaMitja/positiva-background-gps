@@ -79,6 +79,19 @@ public class BackgroundService extends Service
 							//System.out.println("mitja " + Environment.getStorageDirectory());
 							System.out.println("mitja " + Environment.getExternalStorageDirectory());
 							File file = new File(settings.getString("file_path"), "locations.csv");
+							System.out.println("mitja " + file.getAbsolutePath());
+							  System.out.println("mitja " + file.getCanonicalPath());
+											if (file.exists())
+							  {
+								System.out.println("mitja exists " + file.getAbsolutePath());
+								System.out.println("mitja exists " + file.getCanonicalPath());
+							  }
+							  File folder = new File(settings.getString("file_path"));
+							  if (folder.exists())
+							  {
+								System.out.println("mitja exists folder " + folder.getAbsolutePath());
+								System.out.println("mitja exists folder " + folder.getCanonicalPath());
+							  }
 							FileWriter writeFile = new FileWriter(file, true);
 							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + "\n");
 							writeFile.close();
