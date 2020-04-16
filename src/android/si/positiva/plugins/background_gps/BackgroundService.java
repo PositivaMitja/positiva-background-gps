@@ -76,22 +76,8 @@ public class BackgroundService extends Service
 						{
 							Location location = locationResult.getLastLocation();
 							JSONObject settings = BackgroundGPS.getSettings();
-							//System.out.println("mitja " + Environment.getStorageDirectory());
-							System.out.println("mitja " + Environment.getExternalStorageDirectory());
-							File file = new File(settings.getString("file_path"), "locations.csv");
-							System.out.println("mitja " + file.getAbsolutePath());
-							  System.out.println("mitja " + file.getCanonicalPath());
-											if (file.exists())
-							  {
-								System.out.println("mitja exists " + file.getAbsolutePath());
-								System.out.println("mitja exists " + file.getCanonicalPath());
-							  }
-							  File folder = new File(settings.getString("file_path"));
-							  if (folder.exists())
-							  {
-								System.out.println("mitja exists folder " + folder.getAbsolutePath());
-								System.out.println("mitja exists folder " + folder.getCanonicalPath());
-							  }
+							System.out.println("mitja " + settings.getString("file_path"));
+							File file = new File(Environment.getExternalStorageDirectory(), "locations.csv");
 							FileWriter writeFile = new FileWriter(file, true);
 							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + "\n");
 							writeFile.close();
