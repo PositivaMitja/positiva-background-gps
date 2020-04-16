@@ -98,6 +98,7 @@ public class BackgroundGPS extends CordovaPlugin
         Intent intent    = new Intent(context, BackgroundService.class);
         context.unbindService(connection);
         context.stopService(intent);
+		BackgroundGPS.this.service = null;
 	}
 	
 	static JSONObject getSettings() {
