@@ -36,7 +36,7 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("getLocation")) 
 		{
-			Location lastLocation = getLastLocation();
+			JSONObject lastLocation = getLastLocation();
 			PluginResult res = new PluginResult(Status.OK, lastLocation);
 			callbackContext.sendPluginResult(res);
 			callbackContext.success();
@@ -82,8 +82,18 @@ public class BackgroundGPS extends CordovaPlugin
         return settings;
     }
 	
-	private Location getLastLocation()
+	private JSONObject getLastLocation()
     {
-        return service.getLastLocation();
+        Location location = service.getLastLocation();
+		JSONObject object = new JSONObject();
+		try
+		{
+			object.put("latitude", String.valueOf(location.getLatitude()));
+			object.put("longitude", String.valueOf(location.getLongitude()));
+			object.put("altitude", String.valueOf(location.getAltitude()));
+			object.put("accuracy", String.valueOf(location.getAccuracy()));
+		}
+		catch (JSONException e) {}
+		return object;
     }
 }
