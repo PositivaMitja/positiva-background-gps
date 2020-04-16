@@ -72,7 +72,7 @@ public class BackgroundService extends Service
 						try
 						{
 							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
-							writeFile.write(String.valueOf(new Date().getTime())) + ";" 
+							writeFile.write(String.valueOf(new Date().getTime()) + ";" 
 								+ String.valueOf(lastLocation.getLatitude()) + ";" 
 								+ String.valueOf(lastLocation.getLongitude()) + ";" 
 								+ String.valueOf(lastLocation.getAltitude()) + ";" 
