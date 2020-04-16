@@ -75,7 +75,7 @@ public class BackgroundService extends Service
 						{
 							Location location = locationResult.getLastLocation();
 							JSONObject settings = BackgroundGPS.getSettings();
-							FileWriter writeFile = new FileWriter(settings.getString("file_path"));
+							FileWriter writeFile = new FileWriter(new File(settings.getString("file_path")));
 							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + System.getProperty("line.separator"));
 							writeFile.close();
 						}
