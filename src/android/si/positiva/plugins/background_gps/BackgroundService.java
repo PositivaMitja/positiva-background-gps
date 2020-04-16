@@ -33,6 +33,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
+import java.io.File;
+import java.io.FileWriter;
 
 public class BackgroundService extends Service
 {
@@ -66,6 +68,21 @@ public class BackgroundService extends Service
                 System.out.println("mitja locs " + locationResult.getLastLocation());
 				//BackgroundTask backTask = new BackgroundTask(BackgroundGPS.getSettings());
 				//backTask.doInBackground(locationResult.getLastLocation());
+				new Thread(new Runnable(){
+					@Override
+					public void run() {
+						try
+						{
+							Location location = locationResult.getLastLocation();
+							JSONObject settings = BackgroundGPS.getSettings();
+							FileWriter writeFile = new FileWriter(settings.getString("file_path"));
+							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + System.getProperty("line.separator"));
+							writeFile.close();
+						}
+						catch (IOException e) { System.out.println("mitja io error " +e.getMessage()); }
+						catch (JSONException e) { System.out.println("mitja json error " +e.getMessage()); }
+					}
+				}).start();
 				new Thread(new Runnable(){
 					@Override
 					public void run() {
