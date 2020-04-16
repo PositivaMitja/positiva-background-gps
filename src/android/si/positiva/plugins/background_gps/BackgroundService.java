@@ -36,6 +36,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.FileWriter;
 import android.os.Environment;
+import java.util.Date;
 
 public class BackgroundService extends Service
 {
@@ -43,7 +44,7 @@ public class BackgroundService extends Service
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
 	private NotificationManager notificationManager;
-	private BackgroundTask backgroundTask;
+	private Location lastLocation;
 
 	class BackgroundBinder extends Binder
     {
@@ -56,32 +57,30 @@ public class BackgroundService extends Service
     public void onCreate()
     {
         super.onCreate();
-		keepAwake();
-		System.out.println("mitja create");
+		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
-		//backgroundTask = new BackgroundTask(BackgroundGPS.getSettings());
-		System.out.println("mitja create"+ settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                System.out.println("mitja locs " + locationResult.getLastLocation());
-				//BackgroundTask backTask = new BackgroundTask(BackgroundGPS.getSettings());
-				//backTask.doInBackground(locationResult.getLastLocation());
+				lastLocation = locationResult.getLastLocation();
+                System.out.println("mitja geo " + lastLocation.getLatitude() + "|" + lastLocation.getLongitude());
 				new Thread(new Runnable(){
 					@Override
 					public void run() {
 						try
 						{
-							Location location = locationResult.getLastLocation();
-							JSONObject settings = BackgroundGPS.getSettings();
-							FileWriter writeFile = new FileWriter(new File(settings.getString("file_path").replace("file://", "")), true);
-							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + "\n");
+							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
+							writeFile.write(String.valueOf(new Date().getTime())) + ";" 
+								+ String.valueOf(lastLocation.getLatitude()) + ";" 
+								+ String.valueOf(lastLocation.getLongitude()) + ";" 
+								+ String.valueOf(lastLocation.getAltitude()) + ";" 
+								+ String.valueOf(lastLocation.getAccuracy()) + "\n");
 							writeFile.close();
 						}
-						catch (IOException e) { System.out.println("mitja io error " +e.getMessage()); }
-						catch (JSONException e) { System.out.println("mitja json error " +e.getMessage()); }
+						catch (IOException e) { }
+						catch (JSONException e) { }
 					}
 				}).start();
 				new Thread(new Runnable(){
@@ -89,14 +88,13 @@ public class BackgroundService extends Service
 					public void run() {
 						try
 						{
-							Location location = locationResult.getLastLocation();
 							JSONObject settings = BackgroundGPS.getSettings();
 							String param = "{\"vehicle_id\":" + settings.getString("vehicle_id") + ",";
 							param += "\"user_id\":" + settings.getString("user_id") + ",";
-							param += "\"latitude\":" + String.valueOf(location.getLatitude()) + ",";
-							param += "\"longitude\":" + String.valueOf(location.getLongitude()) + ",";
-							param += "\"altitude\":" + String.valueOf(location.getAltitude()) + ",";
-							param += "\"accuracy\":" + String.valueOf(location.getAccuracy()) + "}";
+							param += "\"latitude\":" + String.valueOf(lastLocation.getLatitude()) + ",";
+							param += "\"longitude\":" + String.valueOf(lastLocation.getLongitude()) + ",";
+							param += "\"altitude\":" + String.valueOf(lastLocation.getAltitude()) + ",";
+							param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + "}";
 							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
 							connection.setRequestMethod("POST");
 							connection.setRequestProperty ("Authorization", "Bearer " + settings.getString("token"));
@@ -123,8 +121,6 @@ public class BackgroundService extends Service
             notificationManager.createNotificationChannel(notificationChannel);
         }
         createLocationRequest();
-        //getLastLocation();
-		requestLocationUpdates();
     }
 	@Override
     public IBinder onBind (Intent intent) {
@@ -147,41 +143,31 @@ public class BackgroundService extends Service
     }
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
-		System.out.println("mitja onStartCommand");
+		requestLocationUpdates();
+		startForeground(123456789, getNotification());
         return START_STICKY;
     }
     private void createLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		try
+		{
+			locationRequest = new LocationRequest();
+			locationRequest.setInterval(BackgroundGPS.getSettings().getString("interval") * 1000);
+			locationRequest.setFastestInterval((BackgroundGPS.getSettings().getString("interval") * 1000) - 1000);
+			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		}
+		catch (JSONException e) { }
     }
-    private void getLastLocation() {
-        try {
-            fusedLocationClient.getLastLocation()
-                    .addOnCompleteListener(new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-							System.out.println("mitja OnCompleteListener");
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                System.out.println("mitja location " + task.getResult());
-                            }
-                        }
-                    });
-        } catch (SecurityException unlikely) {
-            System.out.println("mitja Lost location permission.");
-        }
+    public Location getLastLocation() {
+        return lastLocation;
     }
 	public void onLowMemory() {
 		System.out.println("mitja onLowMemory");
     }
 	public void onTrimMemory(int level) {
 		System.out.println("mitja onTrimMemory" + level);
-		startForeground(123456789, getNotification());
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
-		startForeground(123456789, getNotification());
         return true;
     }
 	public void onTaskRemoved(Intent rootIntent) {
@@ -219,55 +205,5 @@ public class BackgroundService extends Service
             builder.setChannelId("mitja01"); // Channel ID
         }
         return builder.build();
-    }
-	protected void updateSettings(JSONObject settings)
-    {
-        System.out.println("mitja updateSettings");
-		System.out.println("mitja updateSettings "+ settings.toString());
-
-    }
-	protected abstract class AbstractTask extends AsyncTask<Location, Void, JSONObject>
-    {
-		private JSONObject settings;
-        public AbstractTask(JSONObject settings)
-		{
-			this.settings = settings;
-		}
-		@Override
-		protected JSONObject doInBackground(Location... params)
-		{
-			Location location = params[0];
-			try
-            {
-				String param = "token=" + settings.getString("token") + "&";
-				param += "vehicle_id=" + settings.getString("vehicle_id") + "&";
-				param += "user_id=" + settings.getString("user_id") + "&";
-				param += "latitude=" + String.valueOf(location.getLatitude()) + "&";
-				param += "longitude=" + String.valueOf(location.getLongitude()) + "&";
-				param += "altitude=" + String.valueOf(location.getAltitude()) + "&";
-				param += "accuracy=" + String.valueOf(location.getAccuracy());
-                HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
-                connection.setRequestMethod("POST");
-				System.out.println("mitja api " + settings.getString("api_url") + settings.getString("api_tracking") + param);
-				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-				writer.write(param);
-				writer.flush();
-				writer.close();
-                String responseString = IOUtils.toString(connection.getInputStream());
-                System.out.println(responseString);
-            }
-            catch (MalformedURLException e) {  }
-            catch (IOException e) { }
-            catch (JSONException e) { }
-			
-			return new JSONObject();
-		}
-    }
-	class BackgroundTask extends AbstractTask
-    {
-        public BackgroundTask(JSONObject settings)
-		{
-			super(settings);
-		}
     }
 }
