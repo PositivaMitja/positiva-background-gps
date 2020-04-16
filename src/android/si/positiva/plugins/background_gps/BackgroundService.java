@@ -169,6 +169,8 @@ public class BackgroundService extends Service
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
+		locationCallback = null;
+		locationRequest = null;
 		fusedLocationClient = null;
         return true;
     }
