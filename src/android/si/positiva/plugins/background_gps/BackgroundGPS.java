@@ -15,11 +15,13 @@ import android.location.Location;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
 import org.json.JSONException;
+import android.content.pm.PackageManager;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
 	private static JSONObject settings = new JSONObject();
 	public BackgroundGPS() {}
+	private CallbackContext callback;
 	
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
@@ -30,7 +32,16 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("startBackground")) 
 		{
-			startService();
+			this.callback = callbackContext;
+			String [] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
+			if(cordova.hasPermission(permissions))
+			{
+				startService();
+			}
+			else
+			{
+				cordova.requestPermissions(this, 1, permissions);
+			}
 		}
 		else if (action.equals("stopBackground")) 
 		{
@@ -97,4 +108,22 @@ public class BackgroundGPS extends CordovaPlugin
 		catch (JSONException e) {}
 		return object;
     }
+	
+	public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException
+	{
+		for(int r:grantResults)
+		{
+			if(r == PackageManager.PERMISSION_DENIED)
+			{
+				this.callback.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PackageManager.PERMISSION_DENIED));
+				return;
+			}
+		}
+		switch(requestCode)
+		{
+			case 1:
+				startService();
+				break;
+		}
+	}
 }
