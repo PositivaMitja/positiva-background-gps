@@ -16,6 +16,7 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
 import org.json.JSONException;
 import android.content.pm.PackageManager;
+import android.Manifest;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
