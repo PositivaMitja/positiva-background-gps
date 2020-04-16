@@ -35,7 +35,7 @@ public class BackgroundGPS extends CordovaPlugin
 		else if (action.equals("getLocation")) 
 		{
 			Location lastLocation = getLastLocation();
-			callback.success(lastLocation);
+			callbackContext.success(lastLocation);
 		}
 		else
 		{
