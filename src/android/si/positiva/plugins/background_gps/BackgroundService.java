@@ -35,6 +35,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import java.io.File;
 import java.io.FileWriter;
+import android.os.Environment;
 
 public class BackgroundService extends Service
 {
@@ -75,13 +76,11 @@ public class BackgroundService extends Service
 						{
 							Location location = locationResult.getLastLocation();
 							JSONObject settings = BackgroundGPS.getSettings();
+							System.out.println("mitja " + Environment.getStorageDirectory());
+							System.out.println("mitja " + Environment.getDataDirectory()());
 							File file = new File(settings.getString("file_path"), "locations.csv");
-							if (!file.exists())
-							{
-								file.mkdirs();
-							}
-							FileWriter writeFile = new FileWriter(file);
-							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + System.getProperty("line.separator"));
+							FileWriter writeFile = new FileWriter(file, true);
+							writeFile.write(String.valueOf(location.getLatitude()) + ";" + String.valueOf(location.getLongitude()) + "\n");
 							writeFile.close();
 						}
 						catch (IOException e) { System.out.println("mitja io error " +e.getMessage()); }
