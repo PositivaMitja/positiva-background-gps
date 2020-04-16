@@ -14,6 +14,7 @@ import si.positiva.plugins.background_gps.BackgroundService.BackgroundBinder;
 import android.location.Location;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
+import org.json.JSONException;
 
 public class BackgroundGPS extends CordovaPlugin 
 {
