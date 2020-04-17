@@ -143,6 +143,7 @@ public class BackgroundService extends Service
         super.onDestroy();
 		stopForeground(true);
         notificationManager.cancel(123456789);
+		fusedLocationClient.removeLocationUpdates(locationCallback);
     }
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
@@ -171,7 +172,7 @@ public class BackgroundService extends Service
     }
 	public boolean onUnbind(Intent intent) {
 		System.out.println("mitja onUnbind");
-		fusedLocationClient.removeLocationUpdates(locationCallback);
+		//fusedLocationClient.removeLocationUpdates(locationCallback);
         return true;
     }
 	public void onTaskRemoved(Intent rootIntent) {
