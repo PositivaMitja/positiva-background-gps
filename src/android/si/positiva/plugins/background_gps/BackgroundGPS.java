@@ -98,7 +98,6 @@ public class BackgroundGPS extends CordovaPlugin
         Intent intent    = new Intent(context, BackgroundService.class);
         context.unbindService(connection);
         context.stopService(intent);
-		BackgroundGPS.this.service = null;
 	}
 	
 	static JSONObject getSettings() {
@@ -159,5 +158,6 @@ public class BackgroundGPS extends CordovaPlugin
     public void onDestroy()
     {
         System.out.println("mitja CordovaPlugin onDestroy");
+		android.os.Process.killProcess(android.os.Process.myPid());
     }
 }
