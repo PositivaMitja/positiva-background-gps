@@ -37,7 +37,7 @@ public class BackgroundGPS extends CordovaPlugin
 			String [] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
 			if(cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
 			{
-				startService();
+				//startService();
 			}
 			else
 			{
