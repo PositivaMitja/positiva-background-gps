@@ -92,8 +92,8 @@ public class BackgroundService extends Service
 							writeFile.write(jsonContent.toString() + "\n");
 							writeFile.close();
 						}
-						catch (IOException e) { }
-						catch (JSONException e) { }
+						catch (IOException e) { System.out.println("mitja io " + e.getMessage()); }
+						catch (JSONException e) { System.out.println("mitja json " + e.getMessage()); }
 					}
 				}).start();
 				new Thread(new Runnable(){
