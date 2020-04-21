@@ -74,7 +74,7 @@ public class BackgroundService extends Service
 					public void run() {
 						try
 						{
-							FileReader readFile = new FileReader(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")); 
+							FileReader readFile = new FileReader(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", ""))); 
 							int i; 
 							String fileContent = "";
 							while ((i=readFile.read()) != -1) {
