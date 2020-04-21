@@ -73,11 +73,13 @@ public class BackgroundService extends Service
 						try
 						{
 							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
-							writeFile.write(String.valueOf(new Date().getTime()) + ";" 
-								+ String.valueOf(lastLocation.getLatitude()) + ";" 
-								+ String.valueOf(lastLocation.getLongitude()) + ";" 
-								+ String.valueOf(lastLocation.getAltitude()) + ";" 
-								+ String.valueOf(lastLocation.getAccuracy()) + "\n");
+							JSONObject log = new JSONObject();
+							log.put("timestamp", String.valueOf(new Date().getTime()));
+							log.put("latitude", String.valueOf(lastLocation.getLatitude()));
+							log.put("longitude", String.valueOf(lastLocation.getLongitude()));
+							log.put("altitude", String.valueOf(lastLocation.getAltitude()));
+							log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
+							writeFile.write(log.toString() + "\n");
 							writeFile.close();
 						}
 						catch (IOException e) { }
@@ -96,11 +98,10 @@ public class BackgroundService extends Service
 							param += "\"longitude\":" + String.valueOf(lastLocation.getLongitude()) + ",";
 							param += "\"altitude\":" + String.valueOf(lastLocation.getAltitude()) + ",";
 							param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + "}";
-							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url") + settings.getString("api_tracking")).openConnection();
+							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url")).openConnection();
 							connection.setRequestMethod("POST");
-							connection.setRequestProperty ("Authorization", "Bearer " + settings.getString("token"));
 							connection.setRequestProperty("Content-Type", "application/json");
-							System.out.println("mitja api " + settings.getString("api_url") + settings.getString("api_tracking") + param);
+							System.out.println("mitja api " + settings.getString("api_url") + param);
 							OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 							writer.write(param);
 							writer.flush();

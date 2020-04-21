@@ -33,6 +33,7 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("startBackground")) 
 		{
+			setSettings(args.optJSONObject(0));
 			this.callback = callbackContext;
 			String [] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
 			if(cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
@@ -161,4 +162,24 @@ public class BackgroundGPS extends CordovaPlugin
 		//stopService();
 		//android.os.Process.killProcess(android.os.Process.myPid());
     }
+	
+	private void setSettings(JSONObject settings)
+	{
+		try
+		{
+			if (settings.has("user_id"))
+			{
+				this.settings.put("user_id", settings.getInt("user_id"));
+			}
+			if (settings.has("vehicle_id"))
+			{
+				this.settings.put("vehicle_id", settings.getInt("vehicle_id"));
+			}
+			if (settings.has("interval"))
+			{
+				this.settings.put("interval", settings.getInt("interval"));
+			}
+		}
+		catch (JSONException e) {}
+	}
 }

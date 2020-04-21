@@ -4,9 +4,6 @@ function BackgroundGPS()
 {
 	this.settings = {
 		API_URL: "https://",
-		API_TRACKING: "/api/vehicle-trackings/create",
-		API_TOKEN_REFRESH: "/api/user/token/refresh",
-		TOKEN: "",
 		USER_ID: 0,
 		VEHICLE_ID: 0,
 		INTERVAL: 10,
@@ -19,9 +16,9 @@ BackgroundGPS.prototype.init = function (settings)
 	exec(null, null, 'BackgroundGPS', 'init', [settings]);
 };
 
-BackgroundGPS.prototype.startBackground = function () 
+BackgroundGPS.prototype.startBackground = function (settings) 
 {
-	exec(null, null, 'BackgroundGPS', 'startBackground', []);
+	exec(null, null, 'BackgroundGPS', 'startBackground', [settings]);
 };
 
 BackgroundGPS.prototype.stopBackground = function () 

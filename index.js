@@ -27,7 +27,7 @@ var BackgroundGPS = (function (_super) {
     }
 
     BackgroundGPS.prototype.init = function (settings) {};
-	BackgroundGPS.prototype.startBackground = function () {};
+	BackgroundGPS.prototype.startBackground = function (settings) {};
 	BackgroundGPS.prototype.stopBackground = function () {};
 	BackgroundGPS.prototype.getLocation = function () { return; };
     BackgroundGPS.decorators = [
@@ -43,7 +43,7 @@ var BackgroundGPS = (function (_super) {
 	__decorate([
         Cordova(),
         __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
+        __metadata("design:paramtypes", [Object]),
         __metadata("design:returntype", void 0)
     ], BackgroundGPS.prototype, "startBackground", null);
 	
