@@ -77,7 +77,7 @@ public class BackgroundService extends Service
 							FileReader readFile = new FileReader(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")); 
 							int i; 
 							String fileContent = "";
-							while ((i=fr.read()) != -1) {
+							while ((i=readFile.read()) != -1) {
 							  fileContent += String.valueOf((char) i); 
 							} 
 							JSONArray jsonContent = new JSONArray(fileContent);
