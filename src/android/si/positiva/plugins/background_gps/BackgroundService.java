@@ -74,13 +74,13 @@ public class BackgroundService extends Service
 					public void run() {
 						try
 						{
-							FileReader readFile = new FileReader(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", ""))); 
+							/*FileReader readFile = new FileReader(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", ""))); 
 							int i; 
 							String fileContent = "";
 							while ((i=readFile.read()) != -1) {
 							  fileContent += String.valueOf((char) i); 
 							} 
-							JSONArray jsonContent = new JSONArray(fileContent);
+							JSONArray jsonContent = new JSONArray(fileContent);*/
 							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
 							JSONObject log = new JSONObject();
 							log.put("timestamp", String.valueOf(new Date().getTime()));
@@ -88,8 +88,8 @@ public class BackgroundService extends Service
 							log.put("longitude", String.valueOf(lastLocation.getLongitude()));
 							log.put("altitude", String.valueOf(lastLocation.getAltitude()));
 							log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
-							jsonContent.put(log);
-							writeFile.write(jsonContent.toString() + "\n");
+							//jsonContent.put(log);
+							writeFile.write(log.toString() + "\n");
 							writeFile.close();
 						}
 						catch (IOException e) { System.out.println("mitja io " + e.getMessage()); }
