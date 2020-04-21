@@ -24,6 +24,7 @@ import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.os.Build;
 import org.json.JSONObject;
+import org.json.JSONArray;
 import android.os.AsyncTask;
 import android.content.Context;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
 import android.os.Environment;
 import java.util.Date;
 
@@ -72,6 +74,13 @@ public class BackgroundService extends Service
 					public void run() {
 						try
 						{
+							FileReader readFile = new FileReader(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")); 
+							int i; 
+							String fileContent = "";
+							while ((i=fr.read()) != -1) {
+							  fileContent += String.valueOf((char) i); 
+							} 
+							JSONArray jsonContent = new JSONArray(fileContent);
 							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
 							JSONObject log = new JSONObject();
 							log.put("timestamp", String.valueOf(new Date().getTime()));
@@ -79,7 +88,8 @@ public class BackgroundService extends Service
 							log.put("longitude", String.valueOf(lastLocation.getLongitude()));
 							log.put("altitude", String.valueOf(lastLocation.getAltitude()));
 							log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
-							writeFile.write(log.toString() + "\n");
+							jsonContent.put(log);
+							writeFile.write(jsonContent.toString() + "\n");
 							writeFile.close();
 						}
 						catch (IOException e) { }
