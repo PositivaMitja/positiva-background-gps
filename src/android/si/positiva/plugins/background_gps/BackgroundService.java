@@ -47,6 +47,7 @@ public class BackgroundService extends Service
     private LocationRequest locationRequest;
 	private NotificationManager notificationManager;
 	private Location lastLocation;
+	private boolean tracking = false;
 
 	class BackgroundBinder extends Binder
     {
@@ -55,6 +56,12 @@ public class BackgroundService extends Service
             return BackgroundService.this;
         }
     }
+	
+	public void setTracking(boolean tracking)
+	{
+		this.tracking = tracking;
+	}
+	
 	@Override
     public void onCreate()
     {
@@ -69,61 +76,57 @@ public class BackgroundService extends Service
                 super.onLocationResult(locationResult);
 				lastLocation = locationResult.getLastLocation();
                 System.out.println("mitja geo " + lastLocation.getLatitude() + "|" + lastLocation.getLongitude());
-				new Thread(new Runnable(){
-					@Override
-					public void run() {
-						try
-						{
-							/*FileReader readFile = new FileReader(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", ""))); 
-							int i; 
-							String fileContent = "";
-							while ((i=readFile.read()) != -1) {
-							  fileContent += String.valueOf((char) i); 
-							} 
-							JSONArray jsonContent = new JSONArray(fileContent);*/
-							FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
-							JSONObject log = new JSONObject();
-							log.put("timestamp", String.valueOf(new Date().getTime()));
-							log.put("latitude", String.valueOf(lastLocation.getLatitude()));
-							log.put("longitude", String.valueOf(lastLocation.getLongitude()));
-							log.put("altitude", String.valueOf(lastLocation.getAltitude()));
-							log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
-							//jsonContent.put(log);
-							writeFile.write(log.toString() + "\n");
-							writeFile.close();
+				if (tracking)
+				{
+					new Thread(new Runnable(){
+						@Override
+						public void run() {
+							try
+							{
+								FileWriter writeFile = new FileWriter(new File(BackgroundGPS.getSettings().getString("file_path").replace("file://", "")), true);
+								JSONObject log = new JSONObject();
+								log.put("timestamp", String.valueOf(new Date().getTime()));
+								log.put("latitude", String.valueOf(lastLocation.getLatitude()));
+								log.put("longitude", String.valueOf(lastLocation.getLongitude()));
+								log.put("altitude", String.valueOf(lastLocation.getAltitude()));
+								log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
+								//jsonContent.put(log);
+								writeFile.write(log.toString() + "\n");
+								writeFile.close();
+							}
+							catch (IOException e) { System.out.println("mitja io " + e.getMessage()); }
+							catch (JSONException e) { System.out.println("mitja json " + e.getMessage()); }
 						}
-						catch (IOException e) { System.out.println("mitja io " + e.getMessage()); }
-						catch (JSONException e) { System.out.println("mitja json " + e.getMessage()); }
-					}
-				}).start();
-				new Thread(new Runnable(){
-					@Override
-					public void run() {
-						try
-						{
-							JSONObject settings = BackgroundGPS.getSettings();
-							String param = "{\"vehicle_id\":" + settings.getString("vehicle_id") + ",";
-							param += "\"user_id\":" + settings.getString("user_id") + ",";
-							param += "\"latitude\":" + String.valueOf(lastLocation.getLatitude()) + ",";
-							param += "\"longitude\":" + String.valueOf(lastLocation.getLongitude()) + ",";
-							param += "\"altitude\":" + String.valueOf(lastLocation.getAltitude()) + ",";
-							param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + "}";
-							HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url")).openConnection();
-							connection.setRequestMethod("POST");
-							connection.setRequestProperty("Content-Type", "application/json");
-							System.out.println("mitja api " + settings.getString("api_url") + param);
-							OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-							writer.write(param);
-							writer.flush();
-							writer.close();
-							String responseString = IOUtils.toString(connection.getInputStream());
-							System.out.println(responseString);
+					}).start();
+					new Thread(new Runnable(){
+						@Override
+						public void run() {
+							try
+							{
+								JSONObject settings = BackgroundGPS.getSettings();
+								String param = "{\"vehicle_id\":" + settings.getString("vehicle_id") + ",";
+								param += "\"user_id\":" + settings.getString("user_id") + ",";
+								param += "\"latitude\":" + String.valueOf(lastLocation.getLatitude()) + ",";
+								param += "\"longitude\":" + String.valueOf(lastLocation.getLongitude()) + ",";
+								param += "\"altitude\":" + String.valueOf(lastLocation.getAltitude()) + ",";
+								param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + "}";
+								HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url")).openConnection();
+								connection.setRequestMethod("POST");
+								connection.setRequestProperty("Content-Type", "application/json");
+								System.out.println("mitja api " + settings.getString("api_url") + param);
+								OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+								writer.write(param);
+								writer.flush();
+								writer.close();
+								String responseString = IOUtils.toString(connection.getInputStream());
+								System.out.println(responseString);
+							}
+							catch (MalformedURLException e) { System.out.println("mitja 1 " + e.getMessage()); }
+							catch (IOException e) { System.out.println("mitja 2 " +e.getMessage()); }
+							catch (JSONException e) { System.out.println("mitja 3 " +e.getMessage()); }
 						}
-						catch (MalformedURLException e) { System.out.println("mitja 1 " + e.getMessage()); }
-						catch (IOException e) { System.out.println("mitja 2 " +e.getMessage()); }
-						catch (JSONException e) { System.out.println("mitja 3 " +e.getMessage()); }
-					}
-				}).start();
+					}).start();
+				}
             }
         };
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

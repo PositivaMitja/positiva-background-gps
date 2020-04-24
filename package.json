@@ -1,6 +1,6 @@
 {
   "name": "positiva-background-gps",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "module": "index.js",
   "typings": "index.d.ts",
   "cordova": {

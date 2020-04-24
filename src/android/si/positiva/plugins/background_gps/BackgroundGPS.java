@@ -33,7 +33,6 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("startBackground")) 
 		{
-			setSettings(args.optJSONObject(0));
 			this.callback = callbackContext;
 			String [] permissions = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION };
 			if(cordova.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
@@ -48,6 +47,15 @@ public class BackgroundGPS extends CordovaPlugin
 		else if (action.equals("stopBackground")) 
 		{
 			stopService();
+		}
+		else if (action.equals("startTracking")) 
+		{
+			setSettings(args.optJSONObject(0));
+			service.setTracking(true);
+		}
+		else if (action.equals("stopTracking")) 
+		{
+			service.setTracking(false);
 		}
 		else if (action.equals("getLocation")) 
 		{
