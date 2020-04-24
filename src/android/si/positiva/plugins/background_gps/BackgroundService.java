@@ -172,6 +172,7 @@ public class BackgroundService extends Service
 			locationRequest.setInterval(BackgroundGPS.getSettings().getInt("interval") * 1000);
 			locationRequest.setFastestInterval((BackgroundGPS.getSettings().getInt("interval") * 1000) - 1000);
 			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+			locationRequest.setSmallestDisplacement(10);
 		}
 		catch (JSONException e) { }
     }
