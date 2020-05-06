@@ -59,10 +59,13 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("getLocation")) 
 		{
-			JSONObject lastLocation = getLastLocation();
-			PluginResult res = new PluginResult(Status.OK, lastLocation);
-			callbackContext.sendPluginResult(res);
-			callbackContext.success();
+			if (this.callback != null)
+			{
+				JSONObject lastLocation = getLastLocation();
+				PluginResult res = new PluginResult(Status.OK, lastLocation);
+				callbackContext.sendPluginResult(res);
+				callbackContext.success();
+			}
 		}
 		else
 		{
