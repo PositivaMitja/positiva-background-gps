@@ -66,6 +66,12 @@ public class BackgroundGPS extends CordovaPlugin
 				callbackContext.sendPluginResult(res);
 				callbackContext.success();
 			}
+			else
+			{
+				PluginResult res = new PluginResult(Status.OK, new JSONObject());
+				callbackContext.sendPluginResult(res);
+				callbackContext.success();
+			}
 		}
 		else
 		{
