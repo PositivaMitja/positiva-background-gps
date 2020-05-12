@@ -176,8 +176,8 @@ public class BackgroundGPS extends CordovaPlugin
     public void onDestroy()
     {
         System.out.println("mitja CordovaPlugin onDestroy");
-		//stopService();
-		//android.os.Process.killProcess(android.os.Process.myPid());
+		stopService();
+		android.os.Process.killProcess(android.os.Process.myPid());
     }
 	
 	private void setSettings(JSONObject settings)
