@@ -163,7 +163,7 @@ public class BackgroundService extends Service
     public int onStartCommand (Intent intent, int flags, int startId) {
 		requestLocationUpdates();
 		startForeground(123456789, getNotification());
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
     private void createLocationRequest() {
 		try
