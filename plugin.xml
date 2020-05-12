@@ -20,7 +20,7 @@
             </feature>
         </config-file>
 		<config-file target="res/xml/config.xml" parent="/*">
-            <preference name="KeepRunning" value="true" />
+            <preference name="KeepRunning" value="false" />
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service android:name="si.positiva.plugins.background_gps.BackgroundService" />
