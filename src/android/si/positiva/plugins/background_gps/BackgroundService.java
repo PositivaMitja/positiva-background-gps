@@ -53,6 +53,7 @@ public class BackgroundService extends Service
     {
         BackgroundService getService()
         {
+			System.out.println("mitja back getService");
             return BackgroundService.this;
         }
     }
@@ -136,31 +137,35 @@ public class BackgroundService extends Service
             notificationManager.createNotificationChannel(notificationChannel);
         }
         createLocationRequest();
+		System.out.println("mitja back onCreate end");
     }
 	@Override
     public IBinder onBind (Intent intent) {
+		System.out.println("mitja back onBind");
         return binder;
     }
 	private final IBinder binder = new BackgroundBinder();
-	@SuppressLint("WakelockTimeout")
+	/*@SuppressLint("WakelockTimeout")
     private void keepAwake()
     {
         PowerManager pm = (PowerManager)getSystemService(POWER_SERVICE);
         wakeLock = pm.newWakeLock(PARTIAL_WAKE_LOCK, "BackgroundService:wakelock");
         wakeLock.acquire();
-    }
+    }*/
 	private PowerManager.WakeLock wakeLock;
 	@Override
     public void onDestroy()
     {
 		System.out.println("mitja onDestroy");
-        super.onDestroy();
 		stopForeground(true);
         notificationManager.cancel(123456789);
 		fusedLocationClient.removeLocationUpdates(locationCallback);
+		
+		super.onDestroy();
     }
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
+		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
 		startForeground(123456789, getNotification());
         return START_NOT_STICKY;
@@ -192,6 +197,7 @@ public class BackgroundService extends Service
     }
 	public void onTaskRemoved(Intent rootIntent) {
 		System.out.println("mitja onTaskRemoved");
+		onDestroy();
     }
 	public void requestLocationUpdates() {
         try {

@@ -21,12 +21,13 @@ import android.Manifest;
 public class BackgroundGPS extends CordovaPlugin 
 {
 	private static JSONObject settings = new JSONObject();
-	public BackgroundGPS() {}
+	public BackgroundGPS() { System.out.println("mitja GPS construct"); }
 	private CallbackContext callback;
 	
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
 	{
+		System.out.println("mitja GPS execute");
 		if (action.equals("init")) 
 		{
 			settings = args.optJSONObject(0);
@@ -87,6 +88,7 @@ public class BackgroundGPS extends CordovaPlugin
 		@Override
 		public void onServiceConnected (ComponentName name, IBinder service)
 		{
+			System.out.println("mitja GPS onServiceConnected");
 			BackgroundBinder binder = (BackgroundBinder) service;
 			BackgroundGPS.this.service = binder.getService();
 		}
@@ -100,6 +102,7 @@ public class BackgroundGPS extends CordovaPlugin
 
 	private void startService()
 	{
+		System.out.println("mitja GPS startService");
 		Activity context = cordova.getActivity();
 		Intent intent = new Intent(context, BackgroundService.class);
 		try {
@@ -112,6 +115,7 @@ public class BackgroundGPS extends CordovaPlugin
 	
 	private void stopService()
 	{
+		System.out.println("mitja GPS stopService");
 		Activity context = cordova.getActivity();
         Intent intent    = new Intent(context, BackgroundService.class);
         context.unbindService(connection);
