@@ -26,9 +26,11 @@ var BackgroundGPS = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
 
-    BackgroundGPS.prototype.init = function (settings) {};
-	BackgroundGPS.prototype.startBackground = function (settings) {};
+    BackgroundGPS.prototype.init = function (settings) { return; };
+	BackgroundGPS.prototype.startBackground = function () { return; };
 	BackgroundGPS.prototype.stopBackground = function () {};
+	BackgroundGPS.prototype.startTracking = function (settings) { return; };
+	BackgroundGPS.prototype.stopTracking = function () {};
 	BackgroundGPS.prototype.getLocation = function () { return; };
     BackgroundGPS.decorators = [
         { type: Injectable },
