@@ -11,7 +11,7 @@ function BackgroundGPS()
 	};
 }
 
-BackgroundGPS.prototype.init = function (successCallback, settings) 
+BackgroundGPS.prototype.init = function (settings, successCallback) 
 {
 	exec(successCallback, null, 'BackgroundGPS', 'init', [settings]);
 };
@@ -26,7 +26,7 @@ BackgroundGPS.prototype.stopBackground = function ()
 	exec(null, null, 'BackgroundGPS', 'stopBackground', []);
 };
 
-BackgroundGPS.prototype.startTracking = function (successCallback, settings) 
+BackgroundGPS.prototype.startTracking = function (settings, successCallback) 
 {
 	exec(successCallback, null, 'BackgroundGPS', 'startTracking', [settings]);
 };
