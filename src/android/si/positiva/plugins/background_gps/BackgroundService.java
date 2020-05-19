@@ -70,6 +70,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja onCreate");
 		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
+		System.out.println("mitja json " + settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -160,7 +161,7 @@ public class BackgroundService extends Service
 		stopForeground(true);
         notificationManager.cancel(123456789);
 		fusedLocationClient.removeLocationUpdates(locationCallback);
-		
+		System.out.println("mitja onDestroy end");
 		super.onDestroy();
     }
     @Override
@@ -197,7 +198,7 @@ public class BackgroundService extends Service
     }
 	public void onTaskRemoved(Intent rootIntent) {
 		System.out.println("mitja onTaskRemoved");
-		onDestroy();
+		//onDestroy();
     }
 	public void requestLocationUpdates() {
         try {
