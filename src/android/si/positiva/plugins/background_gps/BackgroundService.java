@@ -144,7 +144,7 @@ public class BackgroundService extends Service
 		}
 		else
 		{
-			stopService(new Intent(getApplicationContext(), BackgroundService.class));
+			android.os.Process.killProcess(android.os.Process.myPid());
 		}
     }
 	@Override
@@ -180,7 +180,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
 		startForeground(123456789, getNotification());
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
     private void createLocationRequest() {
 		try
