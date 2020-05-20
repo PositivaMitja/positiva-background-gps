@@ -164,11 +164,15 @@ public class BackgroundService extends Service
 	@Override
     public void onDestroy()
     {
+		JSONObject settings = BackgroundGPS.getSettings();
+		if (settings.length() > 0)
+		{
 		System.out.println("mitja onDestroy");
 		stopForeground(true);
         notificationManager.cancel(123456789);
 		fusedLocationClient.removeLocationUpdates(locationCallback);
 		System.out.println("mitja onDestroy end");
+		}
 		super.onDestroy();
     }
     @Override
