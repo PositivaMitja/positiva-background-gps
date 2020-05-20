@@ -144,7 +144,7 @@ public class BackgroundService extends Service
 		}
 		else
 		{
-			stopSelf();
+			stopService(new Intent(getApplicationContext(), BackgroundService.class));
 		}
     }
 	@Override
@@ -180,7 +180,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
 		startForeground(123456789, getNotification());
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
     private void createLocationRequest() {
 		try
