@@ -70,7 +70,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja onCreate");
 		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
-		if (settings.length > 0)
+		if (settings.length() > 0)
 		{
 		System.out.println("mitja json " + settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
