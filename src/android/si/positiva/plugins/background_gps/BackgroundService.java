@@ -70,6 +70,8 @@ public class BackgroundService extends Service
 		System.out.println("mitja onCreate");
 		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
+		if (settings.length > 0)
+		{
 		System.out.println("mitja json " + settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
@@ -139,6 +141,11 @@ public class BackgroundService extends Service
         }
         createLocationRequest();
 		System.out.println("mitja back onCreate end");
+		}
+		else
+		{
+			stopSelf();
+		}
     }
 	@Override
     public IBinder onBind (Intent intent) {
