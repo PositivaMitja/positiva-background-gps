@@ -176,7 +176,7 @@ public class BackgroundService extends Service
 		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
 		startForeground(123456789, getNotification());
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
     private void createLocationRequest() {
 		try
