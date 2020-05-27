@@ -69,10 +69,10 @@ public class BackgroundService extends Service
         super.onCreate();
 		System.out.println("mitja onCreate");
 		//keepAwake();
-		JSONObject settings = BackgroundGPS.getSettings();
+		/*JSONObject settings = BackgroundGPS.getSettings();
 		if (settings.length() > 0)
 		{
-		System.out.println("mitja json " + settings.toString());
+		System.out.println("mitja json " + settings.toString());*/
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -141,11 +141,11 @@ public class BackgroundService extends Service
         }
         createLocationRequest();
 		System.out.println("mitja back onCreate end");
-		}
+		/*}
 		else
 		{
 			android.os.Process.killProcess(android.os.Process.myPid());
-		}
+		}*/
     }
 	@Override
     public IBinder onBind (Intent intent) {
