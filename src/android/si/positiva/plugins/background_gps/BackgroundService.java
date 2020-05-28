@@ -205,10 +205,14 @@ public class BackgroundService extends Service
 		try
 		{
 			locationRequest = new LocationRequest();
-			locationRequest.setInterval(BackgroundGPS.getSettings().getInt("interval") * 1000);
+			/*locationRequest.setInterval(BackgroundGPS.getSettings().getInt("interval") * 1000);
 			locationRequest.setFastestInterval((BackgroundGPS.getSettings().getInt("interval") * 1000) - 1000);
 			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-			locationRequest.setSmallestDisplacement(10);
+			locationRequest.setSmallestDisplacement(10);*/
+			locationRequest.setInterval(10000);
+			locationRequest.setFastestInterval(5000);
+			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+			locationRequest.setSmallestDisplacement(1);
 		}
 		catch (JSONException e) { }
     }
