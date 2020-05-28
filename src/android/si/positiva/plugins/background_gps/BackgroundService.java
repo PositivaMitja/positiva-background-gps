@@ -202,8 +202,8 @@ public class BackgroundService extends Service
         return START_STICKY;
     }
     private void createLocationRequest() {
-		try
-		{
+		/*try
+		{*/
 			locationRequest = new LocationRequest();
 			/*locationRequest.setInterval(BackgroundGPS.getSettings().getInt("interval") * 1000);
 			locationRequest.setFastestInterval((BackgroundGPS.getSettings().getInt("interval") * 1000) - 1000);
@@ -213,8 +213,8 @@ public class BackgroundService extends Service
 			locationRequest.setFastestInterval(5000);
 			locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 			locationRequest.setSmallestDisplacement(1);
-		}
-		catch (JSONException e) { }
+		/*}
+		catch (JSONException e) { }*/
     }
     public Location getLastLocation() {
         return lastLocation;
