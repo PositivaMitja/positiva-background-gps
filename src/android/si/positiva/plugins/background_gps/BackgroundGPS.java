@@ -27,7 +27,7 @@ public class BackgroundGPS extends CordovaPlugin
 	@Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
 	{
-		System.out.println("mitja GPS execute");
+		System.out.println("mitja GPS execute " + action);
 		if (action.equals("init")) 
 		{
 			settings = args.optJSONObject(0);
