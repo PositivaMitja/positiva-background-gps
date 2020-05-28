@@ -70,6 +70,11 @@ public class BackgroundService extends Service
     {
         super.onCreate();
 		System.out.println("mitja onCreate");
+		JSONObject settings = BackgroundGPS.getSettings();
+		if (settings.length() == 0)
+		{
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
 	}
 	public void onRealCreate()
 	{
@@ -99,6 +104,9 @@ public class BackgroundService extends Service
 								log.put("longitude", String.valueOf(lastLocation.getLongitude()));
 								log.put("altitude", String.valueOf(lastLocation.getAltitude()));
 								log.put("accuracy", String.valueOf(lastLocation.getAccuracy()));
+								log.put("altitudeAccuracy", String.valueOf(lastLocation.getVerticalAccuracyMeters()));
+								log.put("heading", String.valueOf(lastLocation.getBearing()));
+								log.put("speed", String.valueOf(lastLocation.getSpeed()));
 								//jsonContent.put(log);
 								writeFile.write(log.toString() + "\n");
 								writeFile.close();
@@ -118,7 +126,11 @@ public class BackgroundService extends Service
 								param += "\"latitude\":" + String.valueOf(lastLocation.getLatitude()) + ",";
 								param += "\"longitude\":" + String.valueOf(lastLocation.getLongitude()) + ",";
 								param += "\"altitude\":" + String.valueOf(lastLocation.getAltitude()) + ",";
-								param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + "}";
+								param += "\"accuracy\":" + String.valueOf(lastLocation.getAccuracy()) + ",";
+								param += "\"altitudeAccuracy\":" + String.valueOf(lastLocation.getVerticalAccuracyMeters()) + ",";
+								param += "\"heading\":" + String.valueOf(lastLocation.getBearing()) + ",";
+								param += "\"speed\":" + String.valueOf(lastLocation.getSpeed()) + ",";
+								param += "\"tracking_datetime\":" + String.valueOf(new Date().getTime()) + "}";
 								HttpURLConnection connection = (HttpURLConnection) new URL(settings.getString("api_url")).openConnection();
 								connection.setRequestMethod("POST");
 								connection.setRequestProperty("Content-Type", "application/json");
