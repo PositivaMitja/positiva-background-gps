@@ -48,6 +48,7 @@ public class BackgroundService extends Service
 	private NotificationManager notificationManager;
 	private Location lastLocation;
 	private boolean tracking = false;
+	private long notificationId;
 
 	class BackgroundBinder extends Binder
     {
@@ -70,10 +71,10 @@ public class BackgroundService extends Service
         super.onCreate();
 		System.out.println("mitja onCreate");
 		//keepAwake();
-		/*JSONObject settings = BackgroundGPS.getSettings();
-		if (settings.length() > 0)
-		{
-		System.out.println("mitja json " + settings.toString());*/
+		JSONObject settings = BackgroundGPS.getSettings();
+		/*if (settings.length() > 0)
+		{*/
+		System.out.println("mitja json " + settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -170,7 +171,7 @@ public class BackgroundService extends Service
 		{
 		System.out.println("mitja onDestroy");
 		stopForeground(true);
-        notificationManager.cancel(123456789);
+        notificationManager.cancel(notificationId);
 		fusedLocationClient.removeLocationUpdates(locationCallback);
 		System.out.println("mitja onDestroy end");
 		}
@@ -180,7 +181,8 @@ public class BackgroundService extends Service
     public int onStartCommand (Intent intent, int flags, int startId) {
 		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
-		startForeground(123456789, getNotification());
+		notificationId = new Date().getTime();
+		startForeground(notificationId, getNotification());
         return START_STICKY;
     }
     private void createLocationRequest() {
