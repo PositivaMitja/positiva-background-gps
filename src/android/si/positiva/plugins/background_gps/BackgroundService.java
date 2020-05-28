@@ -48,7 +48,7 @@ public class BackgroundService extends Service
 	private NotificationManager notificationManager;
 	private Location lastLocation;
 	private boolean tracking = false;
-	private long notificationId;
+	private int notificationId;
 
 	class BackgroundBinder extends Binder
     {
@@ -181,7 +181,7 @@ public class BackgroundService extends Service
     public int onStartCommand (Intent intent, int flags, int startId) {
 		System.out.println("mitja back onStartCommand");
 		requestLocationUpdates();
-		notificationId = new Date().getTime();
+		notificationId = (int) new Date().getTime();
 		startForeground(notificationId, getNotification());
         return START_STICKY;
     }
