@@ -60,6 +60,7 @@ public class BackgroundService extends Service
 	
 	public void setTracking(boolean tracking)
 	{
+		System.out.println("mitja settracking " + tracking);
 		this.tracking = tracking;
 	}
 	

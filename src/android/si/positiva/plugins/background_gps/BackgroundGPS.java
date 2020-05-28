@@ -57,6 +57,7 @@ public class BackgroundGPS extends CordovaPlugin
 		}
 		else if (action.equals("startTracking")) 
 		{
+			System.out.println("mitja GPS execute " + args.optJSONObject(0).toString());
 			setSettings(args.optJSONObject(0));
 			service.setTracking(true);
 			PluginResult res = new PluginResult(Status.OK, true);
