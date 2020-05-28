@@ -70,6 +70,9 @@ public class BackgroundService extends Service
     {
         super.onCreate();
 		System.out.println("mitja onCreate");
+	}
+	public void onRealCreate()
+	{
 		//keepAwake();
 		JSONObject settings = BackgroundGPS.getSettings();
 		/*if (settings.length() > 0)
@@ -152,6 +155,7 @@ public class BackgroundService extends Service
 	@Override
     public IBinder onBind (Intent intent) {
 		System.out.println("mitja back onBind");
+		onRealCreate();
         return binder;
     }
 	private final IBinder binder = new BackgroundBinder();
