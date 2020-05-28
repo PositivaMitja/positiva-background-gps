@@ -78,11 +78,11 @@ public class BackgroundService extends Service
 	}
 	public void onRealCreate()
 	{
-		//keepAwake();
-		JSONObject settings = BackgroundGPS.getSettings();
+		keepAwake();
+		//JSONObject settings = BackgroundGPS.getSettings();
 		/*if (settings.length() > 0)
 		{*/
-		System.out.println("mitja json " + settings.toString());
+		//System.out.println("mitja json " + settings.toString());
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationCallback = new LocationCallback() {
             @Override
@@ -171,21 +171,21 @@ public class BackgroundService extends Service
         return binder;
     }
 	private final IBinder binder = new BackgroundBinder();
-	/*@SuppressLint("WakelockTimeout")
+	@SuppressLint("WakelockTimeout")
     private void keepAwake()
     {
         PowerManager pm = (PowerManager)getSystemService(POWER_SERVICE);
         wakeLock = pm.newWakeLock(PARTIAL_WAKE_LOCK, "BackgroundService:wakelock");
         wakeLock.acquire();
-    }*/
+    }
 	private PowerManager.WakeLock wakeLock;
 	@Override
     public void onDestroy()
     {
+		System.out.println("mitja onDestroy");
 		JSONObject settings = BackgroundGPS.getSettings();
 		if (settings.length() > 0)
 		{
-		System.out.println("mitja onDestroy");
 		stopForeground(true);
         notificationManager.cancel(notificationId);
 		fusedLocationClient.removeLocationUpdates(locationCallback);
