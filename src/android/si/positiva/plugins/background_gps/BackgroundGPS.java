@@ -59,14 +59,20 @@ public class BackgroundGPS extends CordovaPlugin
 		{
 			System.out.println("mitja GPS execute " + args.optJSONObject(0).toString());
 			setSettings(args.optJSONObject(0));
-			service.setTracking(true);
-			PluginResult res = new PluginResult(Status.OK, true);
-			callbackContext.sendPluginResult(res);
-			callbackContext.success();
+                        if (service != null)
+                        {
+                            service.setTracking(true);
+                            PluginResult res = new PluginResult(Status.OK, true);
+                            callbackContext.sendPluginResult(res);
+                            callbackContext.success();
+                        }
 		}
 		else if (action.equals("stopTracking")) 
 		{
-			service.setTracking(false);
+                        if (service != null)
+                        {
+                            service.setTracking(false);
+                        }
 		}
 		else if (action.equals("getLocation")) 
 		{
@@ -91,7 +97,7 @@ public class BackgroundGPS extends CordovaPlugin
 		return true;
 	}
 
-	private BackgroundService service;
+	private BackgroundService service = null;
 
 	private final ServiceConnection connection = new ServiceConnection()
 	{
@@ -138,8 +144,10 @@ public class BackgroundGPS extends CordovaPlugin
 	
 	private JSONObject getLastLocation()
     {
-        Location location = service.getLastLocation();
-		JSONObject object = new JSONObject();
+        JSONObject object = new JSONObject();
+        if (service != null)
+        {
+            Location location = service.getLastLocation();
 		try
 		{
 			object.put("latitude", String.valueOf(location.getLatitude()));
@@ -148,6 +156,7 @@ public class BackgroundGPS extends CordovaPlugin
 			object.put("accuracy", String.valueOf(location.getAccuracy()));
 		}
 		catch (JSONException e) {}
+        }
 		return object;
     }
 	
